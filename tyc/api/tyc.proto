@@ -1,5 +1,5 @@
 syntax = "proto3";
-package echo;
+package tyc;
 
 option go_package = "github.com/realwrtoff/rest_grpc/tyc/api/tyc";
 
