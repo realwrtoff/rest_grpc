@@ -1,0 +1,30 @@
+syntax = "proto3";
+package echo;
+
+option go_package = "github.com/realwrtoff/rest_grpc/tyc/api/tyc";
+
+import "google/api/annotations.proto";
+
+message MobileReq {
+  int64 CompanyId = 1;
+  string Name = 2;
+  string Token = 3;
+}
+
+message MobileRes {
+  int64 CompanyId = 1;
+  string Name = 2;
+  string Phone = 3;
+  string PhoneList = 4;
+  string Telephone = 5;
+  string Email = 6;
+  string Emails = 7;
+}
+
+service MobileService {
+  rpc Mobile(MobileReq) returns (MobileRes) {
+    option (google.api.http) = {
+      get: "/mobile",
+    };
+  }
+}
