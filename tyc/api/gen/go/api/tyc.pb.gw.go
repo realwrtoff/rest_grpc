@@ -33,49 +33,83 @@ var _ = utilities.NewDoubleArray
 var _ = descriptor.ForMessage
 var _ = metadata.Join
 
+func request_TycService_SignIn_0(ctx context.Context, marshaler runtime.Marshaler, client TycServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq SignInReq
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.SignIn(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_TycService_SignIn_0(ctx context.Context, marshaler runtime.Marshaler, server TycServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq SignInReq
+	var metadata runtime.ServerMetadata
+
+	newReader, berr := utilities.IOReaderFactory(req.Body)
+	if berr != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", berr)
+	}
+	if err := marshaler.NewDecoder(newReader()).Decode(&protoReq); err != nil && err != io.EOF {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.SignIn(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
 var (
-	filter_MobileService_Mobile_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+	filter_TycService_Search_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 )
 
-func request_MobileService_Mobile_0(ctx context.Context, marshaler runtime.Marshaler, client MobileServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq MobileReq
+func request_TycService_Search_0(ctx context.Context, marshaler runtime.Marshaler, client TycServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq SearchReq
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_MobileService_Mobile_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_TycService_Search_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := client.Mobile(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	msg, err := client.Search(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
 	return msg, metadata, err
 
 }
 
-func local_request_MobileService_Mobile_0(ctx context.Context, marshaler runtime.Marshaler, server MobileServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq MobileReq
+func local_request_TycService_Search_0(ctx context.Context, marshaler runtime.Marshaler, server TycServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq SearchReq
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
-	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_MobileService_Mobile_0); err != nil {
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_TycService_Search_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
 	}
 
-	msg, err := server.Mobile(ctx, &protoReq)
+	msg, err := server.Search(ctx, &protoReq)
 	return msg, metadata, err
 
 }
 
-// RegisterMobileServiceHandlerServer registers the http handlers for service MobileService to "mux".
-// UnaryRPC     :call MobileServiceServer directly.
+// RegisterTycServiceHandlerServer registers the http handlers for service TycService to "mux".
+// UnaryRPC     :call TycServiceServer directly.
 // StreamingRPC :currently unsupported pending https://github.com/grpc/grpc-go/issues/906.
-// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterMobileServiceHandlerFromEndpoint instead.
-func RegisterMobileServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server MobileServiceServer) error {
+// Note that using this registration option will cause many gRPC library features to stop working. Consider using RegisterTycServiceHandlerFromEndpoint instead.
+func RegisterTycServiceHandlerServer(ctx context.Context, mux *runtime.ServeMux, server TycServiceServer) error {
 
-	mux.Handle("GET", pattern_MobileService_Mobile_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_TycService_SignIn_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		var stream runtime.ServerTransportStream
@@ -86,7 +120,7 @@ func RegisterMobileServiceHandlerServer(ctx context.Context, mux *runtime.ServeM
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := local_request_MobileService_Mobile_0(rctx, inboundMarshaler, server, req, pathParams)
+		resp, md, err := local_request_TycService_SignIn_0(rctx, inboundMarshaler, server, req, pathParams)
 		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
@@ -94,16 +128,39 @@ func RegisterMobileServiceHandlerServer(ctx context.Context, mux *runtime.ServeM
 			return
 		}
 
-		forward_MobileService_Mobile_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_TycService_SignIn_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_TycService_Search_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		var stream runtime.ServerTransportStream
+		ctx = grpc.NewContextWithServerTransportStream(ctx, &stream)
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_TycService_Search_0(rctx, inboundMarshaler, server, req, pathParams)
+		md.HeaderMD, md.TrailerMD = metadata.Join(md.HeaderMD, stream.Header()), metadata.Join(md.TrailerMD, stream.Trailer())
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_TycService_Search_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
 	return nil
 }
 
-// RegisterMobileServiceHandlerFromEndpoint is same as RegisterMobileServiceHandler but
+// RegisterTycServiceHandlerFromEndpoint is same as RegisterTycServiceHandler but
 // automatically dials to "endpoint" and closes the connection when "ctx" gets done.
-func RegisterMobileServiceHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
+func RegisterTycServiceHandlerFromEndpoint(ctx context.Context, mux *runtime.ServeMux, endpoint string, opts []grpc.DialOption) (err error) {
 	conn, err := grpc.Dial(endpoint, opts...)
 	if err != nil {
 		return err
@@ -123,23 +180,23 @@ func RegisterMobileServiceHandlerFromEndpoint(ctx context.Context, mux *runtime.
 		}()
 	}()
 
-	return RegisterMobileServiceHandler(ctx, mux, conn)
+	return RegisterTycServiceHandler(ctx, mux, conn)
 }
 
-// RegisterMobileServiceHandler registers the http handlers for service MobileService to "mux".
+// RegisterTycServiceHandler registers the http handlers for service TycService to "mux".
 // The handlers forward requests to the grpc endpoint over "conn".
-func RegisterMobileServiceHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
-	return RegisterMobileServiceHandlerClient(ctx, mux, NewMobileServiceClient(conn))
+func RegisterTycServiceHandler(ctx context.Context, mux *runtime.ServeMux, conn *grpc.ClientConn) error {
+	return RegisterTycServiceHandlerClient(ctx, mux, NewTycServiceClient(conn))
 }
 
-// RegisterMobileServiceHandlerClient registers the http handlers for service MobileService
-// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "MobileServiceClient".
-// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "MobileServiceClient"
+// RegisterTycServiceHandlerClient registers the http handlers for service TycService
+// to "mux". The handlers forward requests to the grpc endpoint over the given implementation of "TycServiceClient".
+// Note: the gRPC framework executes interceptors within the gRPC handler. If the passed in "TycServiceClient"
 // doesn't go through the normal gRPC flow (creating a gRPC client etc.) then it will be up to the passed in
-// "MobileServiceClient" to call the correct interceptors.
-func RegisterMobileServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client MobileServiceClient) error {
+// "TycServiceClient" to call the correct interceptors.
+func RegisterTycServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux, client TycServiceClient) error {
 
-	mux.Handle("GET", pattern_MobileService_Mobile_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+	mux.Handle("POST", pattern_TycService_SignIn_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
 		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
@@ -148,14 +205,34 @@ func RegisterMobileServiceHandlerClient(ctx context.Context, mux *runtime.ServeM
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
-		resp, md, err := request_MobileService_Mobile_0(rctx, inboundMarshaler, client, req, pathParams)
+		resp, md, err := request_TycService_SignIn_0(rctx, inboundMarshaler, client, req, pathParams)
 		ctx = runtime.NewServerMetadataContext(ctx, md)
 		if err != nil {
 			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
 			return
 		}
 
-		forward_MobileService_Mobile_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+		forward_TycService_SignIn_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
+	mux.Handle("GET", pattern_TycService_Search_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_TycService_Search_0(rctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_TycService_Search_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
 
 	})
 
@@ -163,9 +240,13 @@ func RegisterMobileServiceHandlerClient(ctx context.Context, mux *runtime.ServeM
 }
 
 var (
-	pattern_MobileService_Mobile_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"mobile"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_TycService_SignIn_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"login"}, "", runtime.AssumeColonVerbOpt(true)))
+
+	pattern_TycService_Search_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0}, []string{"search"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (
-	forward_MobileService_Mobile_0 = runtime.ForwardResponseMessage
+	forward_TycService_SignIn_0 = runtime.ForwardResponseMessage
+
+	forward_TycService_Search_0 = runtime.ForwardResponseMessage
 )

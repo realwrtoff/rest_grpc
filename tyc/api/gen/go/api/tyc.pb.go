@@ -8,6 +8,7 @@ package tyc
 
 import (
 	context "context"
+	_ "github.com/gogo/protobuf/gogoproto"
 	proto "github.com/golang/protobuf/proto"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	grpc "google.golang.org/grpc"
@@ -30,18 +31,17 @@ const (
 // of the legacy proto package is being used.
 const _ = proto.ProtoPackageIsVersion4
 
-type MobileReq struct {
+type SignInReq struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	CompanyId int64  `protobuf:"varint,1,opt,name=CompanyId,proto3" json:"CompanyId,omitempty"`
-	Name      string `protobuf:"bytes,2,opt,name=Name,proto3" json:"Name,omitempty"`
-	Token     string `protobuf:"bytes,3,opt,name=Token,proto3" json:"Token,omitempty"`
+	Username string `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
+	Password string `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
 }
 
-func (x *MobileReq) Reset() {
-	*x = MobileReq{}
+func (x *SignInReq) Reset() {
+	*x = SignInReq{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_api_tyc_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -49,13 +49,13 @@ func (x *MobileReq) Reset() {
 	}
 }
 
-func (x *MobileReq) String() string {
+func (x *SignInReq) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*MobileReq) ProtoMessage() {}
+func (*SignInReq) ProtoMessage() {}
 
-func (x *MobileReq) ProtoReflect() protoreflect.Message {
+func (x *SignInReq) ProtoReflect() protoreflect.Message {
 	mi := &file_api_tyc_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -67,48 +67,37 @@ func (x *MobileReq) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use MobileReq.ProtoReflect.Descriptor instead.
-func (*MobileReq) Descriptor() ([]byte, []int) {
+// Deprecated: Use SignInReq.ProtoReflect.Descriptor instead.
+func (*SignInReq) Descriptor() ([]byte, []int) {
 	return file_api_tyc_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *MobileReq) GetCompanyId() int64 {
+func (x *SignInReq) GetUsername() string {
 	if x != nil {
-		return x.CompanyId
-	}
-	return 0
-}
-
-func (x *MobileReq) GetName() string {
-	if x != nil {
-		return x.Name
+		return x.Username
 	}
 	return ""
 }
 
-func (x *MobileReq) GetToken() string {
+func (x *SignInReq) GetPassword() string {
 	if x != nil {
-		return x.Token
+		return x.Password
 	}
 	return ""
 }
 
-type MobileRes struct {
+type SignInRes struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
 	unknownFields protoimpl.UnknownFields
 
-	CompanyId int64  `protobuf:"varint,1,opt,name=CompanyId,proto3" json:"CompanyId,omitempty"`
-	Name      string `protobuf:"bytes,2,opt,name=Name,proto3" json:"Name,omitempty"`
-	Phone     string `protobuf:"bytes,3,opt,name=Phone,proto3" json:"Phone,omitempty"`
-	PhoneList string `protobuf:"bytes,4,opt,name=PhoneList,proto3" json:"PhoneList,omitempty"`
-	Telephone string `protobuf:"bytes,5,opt,name=Telephone,proto3" json:"Telephone,omitempty"`
-	Email     string `protobuf:"bytes,6,opt,name=Email,proto3" json:"Email,omitempty"`
-	Emails    string `protobuf:"bytes,7,opt,name=Emails,proto3" json:"Emails,omitempty"`
+	Status  int32  `protobuf:"varint,1,opt,name=status,proto3" json:"status,omitempty"`
+	Message string `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	Token   string `protobuf:"bytes,3,opt,name=token,proto3" json:"token,omitempty"`
 }
 
-func (x *MobileRes) Reset() {
-	*x = MobileRes{}
+func (x *SignInRes) Reset() {
+	*x = SignInRes{}
 	if protoimpl.UnsafeEnabled {
 		mi := &file_api_tyc_proto_msgTypes[1]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -116,13 +105,13 @@ func (x *MobileRes) Reset() {
 	}
 }
 
-func (x *MobileRes) String() string {
+func (x *SignInRes) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*MobileRes) ProtoMessage() {}
+func (*SignInRes) ProtoMessage() {}
 
-func (x *MobileRes) ProtoReflect() protoreflect.Message {
+func (x *SignInRes) ProtoReflect() protoreflect.Message {
 	mi := &file_api_tyc_proto_msgTypes[1]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -134,92 +123,311 @@ func (x *MobileRes) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use MobileRes.ProtoReflect.Descriptor instead.
-func (*MobileRes) Descriptor() ([]byte, []int) {
+// Deprecated: Use SignInRes.ProtoReflect.Descriptor instead.
+func (*SignInRes) Descriptor() ([]byte, []int) {
 	return file_api_tyc_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *MobileRes) GetCompanyId() int64 {
+func (x *SignInRes) GetStatus() int32 {
+	if x != nil {
+		return x.Status
+	}
+	return 0
+}
+
+func (x *SignInRes) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *SignInRes) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
+}
+
+type SearchReq struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	CompanyId int64  `protobuf:"varint,1,opt,name=companyId,proto3" json:"companyId,omitempty"`
+	Name      string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Token     string `protobuf:"bytes,3,opt,name=token,proto3" json:"token,omitempty"`
+}
+
+func (x *SearchReq) Reset() {
+	*x = SearchReq{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_tyc_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SearchReq) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SearchReq) ProtoMessage() {}
+
+func (x *SearchReq) ProtoReflect() protoreflect.Message {
+	mi := &file_api_tyc_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SearchReq.ProtoReflect.Descriptor instead.
+func (*SearchReq) Descriptor() ([]byte, []int) {
+	return file_api_tyc_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *SearchReq) GetCompanyId() int64 {
 	if x != nil {
 		return x.CompanyId
 	}
 	return 0
 }
 
-func (x *MobileRes) GetName() string {
+func (x *SearchReq) GetName() string {
 	if x != nil {
 		return x.Name
 	}
 	return ""
 }
 
-func (x *MobileRes) GetPhone() string {
+func (x *SearchReq) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
+}
+
+type TycMobile struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	CompanyId int64  `protobuf:"varint,1,opt,name=companyId,proto3" json:"companyId,omitempty"`
+	Name      string `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
+	Phone     string `protobuf:"bytes,3,opt,name=phone,proto3" json:"phone,omitempty"`
+	PhoneList string `protobuf:"bytes,4,opt,name=phoneList,proto3" json:"phoneList,omitempty"`
+	Telephone string `protobuf:"bytes,5,opt,name=telephone,proto3" json:"telephone,omitempty"`
+	Email     string `protobuf:"bytes,6,opt,name=email,proto3" json:"email,omitempty"`
+	Emails    string `protobuf:"bytes,7,opt,name=emails,proto3" json:"emails,omitempty"`
+}
+
+func (x *TycMobile) Reset() {
+	*x = TycMobile{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_tyc_proto_msgTypes[3]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *TycMobile) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TycMobile) ProtoMessage() {}
+
+func (x *TycMobile) ProtoReflect() protoreflect.Message {
+	mi := &file_api_tyc_proto_msgTypes[3]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TycMobile.ProtoReflect.Descriptor instead.
+func (*TycMobile) Descriptor() ([]byte, []int) {
+	return file_api_tyc_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *TycMobile) GetCompanyId() int64 {
+	if x != nil {
+		return x.CompanyId
+	}
+	return 0
+}
+
+func (x *TycMobile) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *TycMobile) GetPhone() string {
 	if x != nil {
 		return x.Phone
 	}
 	return ""
 }
 
-func (x *MobileRes) GetPhoneList() string {
+func (x *TycMobile) GetPhoneList() string {
 	if x != nil {
 		return x.PhoneList
 	}
 	return ""
 }
 
-func (x *MobileRes) GetTelephone() string {
+func (x *TycMobile) GetTelephone() string {
 	if x != nil {
 		return x.Telephone
 	}
 	return ""
 }
 
-func (x *MobileRes) GetEmail() string {
+func (x *TycMobile) GetEmail() string {
 	if x != nil {
 		return x.Email
 	}
 	return ""
 }
 
-func (x *MobileRes) GetEmails() string {
+func (x *TycMobile) GetEmails() string {
 	if x != nil {
 		return x.Emails
 	}
 	return ""
 }
 
+type SearchRes struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Status  int32      `protobuf:"varint,1,opt,name=status,proto3" json:"status,omitempty"`
+	Message string     `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	Data    *TycMobile `protobuf:"bytes,3,opt,name=data,proto3" json:"data,omitempty"`
+}
+
+func (x *SearchRes) Reset() {
+	*x = SearchRes{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_api_tyc_proto_msgTypes[4]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *SearchRes) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*SearchRes) ProtoMessage() {}
+
+func (x *SearchRes) ProtoReflect() protoreflect.Message {
+	mi := &file_api_tyc_proto_msgTypes[4]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use SearchRes.ProtoReflect.Descriptor instead.
+func (*SearchRes) Descriptor() ([]byte, []int) {
+	return file_api_tyc_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *SearchRes) GetStatus() int32 {
+	if x != nil {
+		return x.Status
+	}
+	return 0
+}
+
+func (x *SearchRes) GetMessage() string {
+	if x != nil {
+		return x.Message
+	}
+	return ""
+}
+
+func (x *SearchRes) GetData() *TycMobile {
+	if x != nil {
+		return x.Data
+	}
+	return nil
+}
+
 var File_api_tyc_proto protoreflect.FileDescriptor
 
 var file_api_tyc_proto_rawDesc = []byte{
 	0x0a, 0x0d, 0x61, 0x70, 0x69, 0x2f, 0x74, 0x79, 0x63, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12,
-	0x03, 0x74, 0x79, 0x63, 0x1a, 0x1c, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x61, 0x70, 0x69,
+	0x03, 0x61, 0x70, 0x69, 0x1a, 0x1c, 0x67, 0x6f, 0x6f, 0x67, 0x6c, 0x65, 0x2f, 0x61, 0x70, 0x69,
 	0x2f, 0x61, 0x6e, 0x6e, 0x6f, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x73, 0x2e, 0x70, 0x72, 0x6f,
-	0x74, 0x6f, 0x22, 0x53, 0x0a, 0x09, 0x4d, 0x6f, 0x62, 0x69, 0x6c, 0x65, 0x52, 0x65, 0x71, 0x12,
-	0x1c, 0x0a, 0x09, 0x43, 0x6f, 0x6d, 0x70, 0x61, 0x6e, 0x79, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01,
-	0x28, 0x03, 0x52, 0x09, 0x43, 0x6f, 0x6d, 0x70, 0x61, 0x6e, 0x79, 0x49, 0x64, 0x12, 0x12, 0x0a,
-	0x04, 0x4e, 0x61, 0x6d, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x4e, 0x61, 0x6d,
-	0x65, 0x12, 0x14, 0x0a, 0x05, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x05, 0x54, 0x6f, 0x6b, 0x65, 0x6e, 0x22, 0xbd, 0x01, 0x0a, 0x09, 0x4d, 0x6f, 0x62, 0x69,
-	0x6c, 0x65, 0x52, 0x65, 0x73, 0x12, 0x1c, 0x0a, 0x09, 0x43, 0x6f, 0x6d, 0x70, 0x61, 0x6e, 0x79,
-	0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x09, 0x43, 0x6f, 0x6d, 0x70, 0x61, 0x6e,
-	0x79, 0x49, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x4e, 0x61, 0x6d, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28,
-	0x09, 0x52, 0x04, 0x4e, 0x61, 0x6d, 0x65, 0x12, 0x14, 0x0a, 0x05, 0x50, 0x68, 0x6f, 0x6e, 0x65,
-	0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x50, 0x68, 0x6f, 0x6e, 0x65, 0x12, 0x1c, 0x0a,
-	0x09, 0x50, 0x68, 0x6f, 0x6e, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x09, 0x50, 0x68, 0x6f, 0x6e, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x1c, 0x0a, 0x09, 0x54,
-	0x65, 0x6c, 0x65, 0x70, 0x68, 0x6f, 0x6e, 0x65, 0x18, 0x05, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09,
-	0x54, 0x65, 0x6c, 0x65, 0x70, 0x68, 0x6f, 0x6e, 0x65, 0x12, 0x14, 0x0a, 0x05, 0x45, 0x6d, 0x61,
-	0x69, 0x6c, 0x18, 0x06, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x45, 0x6d, 0x61, 0x69, 0x6c, 0x12,
-	0x16, 0x0a, 0x06, 0x45, 0x6d, 0x61, 0x69, 0x6c, 0x73, 0x18, 0x07, 0x20, 0x01, 0x28, 0x09, 0x52,
-	0x06, 0x45, 0x6d, 0x61, 0x69, 0x6c, 0x73, 0x32, 0x4a, 0x0a, 0x0d, 0x4d, 0x6f, 0x62, 0x69, 0x6c,
-	0x65, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x39, 0x0a, 0x06, 0x4d, 0x6f, 0x62, 0x69,
-	0x6c, 0x65, 0x12, 0x0e, 0x2e, 0x74, 0x79, 0x63, 0x2e, 0x4d, 0x6f, 0x62, 0x69, 0x6c, 0x65, 0x52,
-	0x65, 0x71, 0x1a, 0x0e, 0x2e, 0x74, 0x79, 0x63, 0x2e, 0x4d, 0x6f, 0x62, 0x69, 0x6c, 0x65, 0x52,
-	0x65, 0x73, 0x22, 0x0f, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x09, 0x12, 0x07, 0x2f, 0x6d, 0x6f, 0x62,
-	0x69, 0x6c, 0x65, 0x42, 0x2d, 0x5a, 0x2b, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f,
-	0x6d, 0x2f, 0x72, 0x65, 0x61, 0x6c, 0x77, 0x72, 0x74, 0x6f, 0x66, 0x66, 0x2f, 0x72, 0x65, 0x73,
-	0x74, 0x5f, 0x67, 0x72, 0x70, 0x63, 0x2f, 0x74, 0x79, 0x63, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x74,
-	0x79, 0x63, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x74, 0x6f, 0x1a, 0x14, 0x67, 0x6f, 0x67, 0x6f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x67, 0x6f,
+	0x67, 0x6f, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x22, 0x91, 0x01, 0x0a, 0x09, 0x53, 0x69, 0x67,
+	0x6e, 0x49, 0x6e, 0x52, 0x65, 0x71, 0x12, 0x41, 0x0a, 0x08, 0x75, 0x73, 0x65, 0x72, 0x6e, 0x61,
+	0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x42, 0x25, 0xf2, 0xde, 0x1f, 0x21, 0x72, 0x75,
+	0x6c, 0x65, 0x3a, 0x22, 0x6c, 0x65, 0x6e, 0x28, 0x78, 0x29, 0x20, 0x3c, 0x20, 0x36, 0x34, 0x20,
+	0x26, 0x26, 0x20, 0x6c, 0x65, 0x6e, 0x28, 0x78, 0x29, 0x20, 0x3e, 0x3d, 0x20, 0x38, 0x22, 0x52,
+	0x08, 0x75, 0x73, 0x65, 0x72, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x41, 0x0a, 0x08, 0x70, 0x61, 0x73,
+	0x73, 0x77, 0x6f, 0x72, 0x64, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x42, 0x25, 0xf2, 0xde, 0x1f,
+	0x21, 0x72, 0x75, 0x6c, 0x65, 0x3a, 0x22, 0x6c, 0x65, 0x6e, 0x28, 0x78, 0x29, 0x20, 0x3c, 0x20,
+	0x36, 0x34, 0x20, 0x26, 0x26, 0x20, 0x6c, 0x65, 0x6e, 0x28, 0x78, 0x29, 0x20, 0x3e, 0x3d, 0x20,
+	0x38, 0x22, 0x52, 0x08, 0x70, 0x61, 0x73, 0x73, 0x77, 0x6f, 0x72, 0x64, 0x22, 0x53, 0x0a, 0x09,
+	0x53, 0x69, 0x67, 0x6e, 0x49, 0x6e, 0x52, 0x65, 0x73, 0x12, 0x16, 0x0a, 0x06, 0x73, 0x74, 0x61,
+	0x74, 0x75, 0x73, 0x18, 0x01, 0x20, 0x01, 0x28, 0x05, 0x52, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75,
+	0x73, 0x12, 0x18, 0x0a, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x02, 0x20, 0x01,
+	0x28, 0x09, 0x52, 0x07, 0x6d, 0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x14, 0x0a, 0x05, 0x74,
+	0x6f, 0x6b, 0x65, 0x6e, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x74, 0x6f, 0x6b, 0x65,
+	0x6e, 0x22, 0x53, 0x0a, 0x09, 0x53, 0x65, 0x61, 0x72, 0x63, 0x68, 0x52, 0x65, 0x71, 0x12, 0x1c,
+	0x0a, 0x09, 0x63, 0x6f, 0x6d, 0x70, 0x61, 0x6e, 0x79, 0x49, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x03, 0x52, 0x09, 0x63, 0x6f, 0x6d, 0x70, 0x61, 0x6e, 0x79, 0x49, 0x64, 0x12, 0x12, 0x0a, 0x04,
+	0x6e, 0x61, 0x6d, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65,
+	0x12, 0x14, 0x0a, 0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x18, 0x03, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x05, 0x74, 0x6f, 0x6b, 0x65, 0x6e, 0x22, 0xbd, 0x01, 0x0a, 0x09, 0x54, 0x79, 0x63, 0x4d, 0x6f,
+	0x62, 0x69, 0x6c, 0x65, 0x12, 0x1c, 0x0a, 0x09, 0x63, 0x6f, 0x6d, 0x70, 0x61, 0x6e, 0x79, 0x49,
+	0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x03, 0x52, 0x09, 0x63, 0x6f, 0x6d, 0x70, 0x61, 0x6e, 0x79,
+	0x49, 0x64, 0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09,
+	0x52, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x12, 0x14, 0x0a, 0x05, 0x70, 0x68, 0x6f, 0x6e, 0x65, 0x18,
+	0x03, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x70, 0x68, 0x6f, 0x6e, 0x65, 0x12, 0x1c, 0x0a, 0x09,
+	0x70, 0x68, 0x6f, 0x6e, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x18, 0x04, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x09, 0x70, 0x68, 0x6f, 0x6e, 0x65, 0x4c, 0x69, 0x73, 0x74, 0x12, 0x1c, 0x0a, 0x09, 0x74, 0x65,
+	0x6c, 0x65, 0x70, 0x68, 0x6f, 0x6e, 0x65, 0x18, 0x05, 0x20, 0x01, 0x28, 0x09, 0x52, 0x09, 0x74,
+	0x65, 0x6c, 0x65, 0x70, 0x68, 0x6f, 0x6e, 0x65, 0x12, 0x14, 0x0a, 0x05, 0x65, 0x6d, 0x61, 0x69,
+	0x6c, 0x18, 0x06, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x65, 0x6d, 0x61, 0x69, 0x6c, 0x12, 0x16,
+	0x0a, 0x06, 0x65, 0x6d, 0x61, 0x69, 0x6c, 0x73, 0x18, 0x07, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06,
+	0x65, 0x6d, 0x61, 0x69, 0x6c, 0x73, 0x22, 0x61, 0x0a, 0x09, 0x53, 0x65, 0x61, 0x72, 0x63, 0x68,
+	0x52, 0x65, 0x73, 0x12, 0x16, 0x0a, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x05, 0x52, 0x06, 0x73, 0x74, 0x61, 0x74, 0x75, 0x73, 0x12, 0x18, 0x0a, 0x07, 0x6d,
+	0x65, 0x73, 0x73, 0x61, 0x67, 0x65, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x6d, 0x65,
+	0x73, 0x73, 0x61, 0x67, 0x65, 0x12, 0x22, 0x0a, 0x04, 0x64, 0x61, 0x74, 0x61, 0x18, 0x03, 0x20,
+	0x01, 0x28, 0x0b, 0x32, 0x0e, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x54, 0x79, 0x63, 0x4d, 0x6f, 0x62,
+	0x69, 0x6c, 0x65, 0x52, 0x04, 0x64, 0x61, 0x74, 0x61, 0x32, 0x84, 0x01, 0x0a, 0x0a, 0x54, 0x79,
+	0x63, 0x53, 0x65, 0x72, 0x76, 0x69, 0x63, 0x65, 0x12, 0x3b, 0x0a, 0x06, 0x53, 0x69, 0x67, 0x6e,
+	0x49, 0x6e, 0x12, 0x0e, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x53, 0x69, 0x67, 0x6e, 0x49, 0x6e, 0x52,
+	0x65, 0x71, 0x1a, 0x0e, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x53, 0x69, 0x67, 0x6e, 0x49, 0x6e, 0x52,
+	0x65, 0x73, 0x22, 0x11, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x0b, 0x22, 0x06, 0x2f, 0x6c, 0x6f, 0x67,
+	0x69, 0x6e, 0x3a, 0x01, 0x2a, 0x12, 0x39, 0x0a, 0x06, 0x53, 0x65, 0x61, 0x72, 0x63, 0x68, 0x12,
+	0x0e, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x53, 0x65, 0x61, 0x72, 0x63, 0x68, 0x52, 0x65, 0x71, 0x1a,
+	0x0e, 0x2e, 0x61, 0x70, 0x69, 0x2e, 0x53, 0x65, 0x61, 0x72, 0x63, 0x68, 0x52, 0x65, 0x73, 0x22,
+	0x0f, 0x82, 0xd3, 0xe4, 0x93, 0x02, 0x09, 0x12, 0x07, 0x2f, 0x73, 0x65, 0x61, 0x72, 0x63, 0x68,
+	0x42, 0x2d, 0x5a, 0x2b, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x72,
+	0x65, 0x61, 0x6c, 0x77, 0x72, 0x74, 0x6f, 0x66, 0x66, 0x2f, 0x72, 0x65, 0x73, 0x74, 0x5f, 0x67,
+	0x72, 0x70, 0x63, 0x2f, 0x74, 0x79, 0x63, 0x2f, 0x61, 0x70, 0x69, 0x2f, 0x74, 0x79, 0x63, 0x62,
+	0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -234,19 +442,25 @@ func file_api_tyc_proto_rawDescGZIP() []byte {
 	return file_api_tyc_proto_rawDescData
 }
 
-var file_api_tyc_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_api_tyc_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
 var file_api_tyc_proto_goTypes = []interface{}{
-	(*MobileReq)(nil), // 0: tyc.MobileReq
-	(*MobileRes)(nil), // 1: tyc.MobileRes
+	(*SignInReq)(nil), // 0: api.SignInReq
+	(*SignInRes)(nil), // 1: api.SignInRes
+	(*SearchReq)(nil), // 2: api.SearchReq
+	(*TycMobile)(nil), // 3: api.TycMobile
+	(*SearchRes)(nil), // 4: api.SearchRes
 }
 var file_api_tyc_proto_depIdxs = []int32{
-	0, // 0: tyc.MobileService.Mobile:input_type -> tyc.MobileReq
-	1, // 1: tyc.MobileService.Mobile:output_type -> tyc.MobileRes
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	3, // 0: api.SearchRes.data:type_name -> api.TycMobile
+	0, // 1: api.TycService.SignIn:input_type -> api.SignInReq
+	2, // 2: api.TycService.Search:input_type -> api.SearchReq
+	1, // 3: api.TycService.SignIn:output_type -> api.SignInRes
+	4, // 4: api.TycService.Search:output_type -> api.SearchRes
+	3, // [3:5] is the sub-list for method output_type
+	1, // [1:3] is the sub-list for method input_type
+	1, // [1:1] is the sub-list for extension type_name
+	1, // [1:1] is the sub-list for extension extendee
+	0, // [0:1] is the sub-list for field type_name
 }
 
 func init() { file_api_tyc_proto_init() }
@@ -256,7 +470,7 @@ func file_api_tyc_proto_init() {
 	}
 	if !protoimpl.UnsafeEnabled {
 		file_api_tyc_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*MobileReq); i {
+			switch v := v.(*SignInReq); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -268,7 +482,43 @@ func file_api_tyc_proto_init() {
 			}
 		}
 		file_api_tyc_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*MobileRes); i {
+			switch v := v.(*SignInRes); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_tyc_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SearchReq); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_tyc_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*TycMobile); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_api_tyc_proto_msgTypes[4].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*SearchRes); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -286,7 +536,7 @@ func file_api_tyc_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_api_tyc_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   5,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
@@ -308,72 +558,108 @@ var _ grpc.ClientConnInterface
 // is compatible with the grpc package it is being compiled against.
 const _ = grpc.SupportPackageIsVersion6
 
-// MobileServiceClient is the client API for MobileService service.
+// TycServiceClient is the client API for TycService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type MobileServiceClient interface {
-	Mobile(ctx context.Context, in *MobileReq, opts ...grpc.CallOption) (*MobileRes, error)
+type TycServiceClient interface {
+	SignIn(ctx context.Context, in *SignInReq, opts ...grpc.CallOption) (*SignInRes, error)
+	Search(ctx context.Context, in *SearchReq, opts ...grpc.CallOption) (*SearchRes, error)
 }
 
-type mobileServiceClient struct {
+type tycServiceClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewMobileServiceClient(cc grpc.ClientConnInterface) MobileServiceClient {
-	return &mobileServiceClient{cc}
+func NewTycServiceClient(cc grpc.ClientConnInterface) TycServiceClient {
+	return &tycServiceClient{cc}
 }
 
-func (c *mobileServiceClient) Mobile(ctx context.Context, in *MobileReq, opts ...grpc.CallOption) (*MobileRes, error) {
-	out := new(MobileRes)
-	err := c.cc.Invoke(ctx, "/tyc.MobileService/Mobile", in, out, opts...)
+func (c *tycServiceClient) SignIn(ctx context.Context, in *SignInReq, opts ...grpc.CallOption) (*SignInRes, error) {
+	out := new(SignInRes)
+	err := c.cc.Invoke(ctx, "/api.TycService/SignIn", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// MobileServiceServer is the server API for MobileService service.
-type MobileServiceServer interface {
-	Mobile(context.Context, *MobileReq) (*MobileRes, error)
+func (c *tycServiceClient) Search(ctx context.Context, in *SearchReq, opts ...grpc.CallOption) (*SearchRes, error) {
+	out := new(SearchRes)
+	err := c.cc.Invoke(ctx, "/api.TycService/Search", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
-// UnimplementedMobileServiceServer can be embedded to have forward compatible implementations.
-type UnimplementedMobileServiceServer struct {
+// TycServiceServer is the server API for TycService service.
+type TycServiceServer interface {
+	SignIn(context.Context, *SignInReq) (*SignInRes, error)
+	Search(context.Context, *SearchReq) (*SearchRes, error)
 }
 
-func (*UnimplementedMobileServiceServer) Mobile(context.Context, *MobileReq) (*MobileRes, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method Mobile not implemented")
+// UnimplementedTycServiceServer can be embedded to have forward compatible implementations.
+type UnimplementedTycServiceServer struct {
 }
 
-func RegisterMobileServiceServer(s *grpc.Server, srv MobileServiceServer) {
-	s.RegisterService(&_MobileService_serviceDesc, srv)
+func (*UnimplementedTycServiceServer) SignIn(context.Context, *SignInReq) (*SignInRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method SignIn not implemented")
+}
+func (*UnimplementedTycServiceServer) Search(context.Context, *SearchReq) (*SearchRes, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Search not implemented")
 }
 
-func _MobileService_Mobile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MobileReq)
+func RegisterTycServiceServer(s *grpc.Server, srv TycServiceServer) {
+	s.RegisterService(&_TycService_serviceDesc, srv)
+}
+
+func _TycService_SignIn_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SignInReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MobileServiceServer).Mobile(ctx, in)
+		return srv.(TycServiceServer).SignIn(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/tyc.MobileService/Mobile",
+		FullMethod: "/api.TycService/SignIn",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MobileServiceServer).Mobile(ctx, req.(*MobileReq))
+		return srv.(TycServiceServer).SignIn(ctx, req.(*SignInReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-var _MobileService_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "tyc.MobileService",
-	HandlerType: (*MobileServiceServer)(nil),
+func _TycService_Search_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SearchReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TycServiceServer).Search(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/api.TycService/Search",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TycServiceServer).Search(ctx, req.(*SearchReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _TycService_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "api.TycService",
+	HandlerType: (*TycServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "Mobile",
-			Handler:    _MobileService_Mobile_Handler,
+			MethodName: "SignIn",
+			Handler:    _TycService_SignIn_Handler,
+		},
+		{
+			MethodName: "Search",
+			Handler:    _TycService_Search_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

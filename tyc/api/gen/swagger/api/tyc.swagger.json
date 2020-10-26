@@ -11,14 +11,14 @@
     "application/json"
   ],
   "paths": {
-    "/mobile": {
-      "get": {
-        "operationId": "MobileService_Mobile",
+    "/login": {
+      "post": {
+        "operationId": "TycService_SignIn",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/tycMobileRes"
+              "$ref": "#/definitions/apiSignInRes"
             }
           },
           "default": {
@@ -30,32 +30,132 @@
         },
         "parameters": [
           {
-            "name": "CompanyId",
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/apiSignInReq"
+            }
+          }
+        ],
+        "tags": [
+          "TycService"
+        ]
+      }
+    },
+    "/search": {
+      "get": {
+        "operationId": "TycService_Search",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/apiSearchRes"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "companyId",
             "in": "query",
             "required": false,
             "type": "string",
             "format": "int64"
           },
           {
-            "name": "Name",
+            "name": "name",
             "in": "query",
             "required": false,
             "type": "string"
           },
           {
-            "name": "Token",
+            "name": "token",
             "in": "query",
             "required": false,
             "type": "string"
           }
         ],
         "tags": [
-          "MobileService"
+          "TycService"
         ]
       }
     }
   },
   "definitions": {
+    "apiSearchRes": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "data": {
+          "$ref": "#/definitions/apiTycMobile"
+        }
+      }
+    },
+    "apiSignInReq": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "apiSignInRes": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "token": {
+          "type": "string"
+        }
+      }
+    },
+    "apiTycMobile": {
+      "type": "object",
+      "properties": {
+        "companyId": {
+          "type": "string",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "phoneList": {
+          "type": "string"
+        },
+        "telephone": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "emails": {
+          "type": "string"
+        }
+      }
+    },
     "protobufAny": {
       "type": "object",
       "properties": {
@@ -86,33 +186,6 @@
           "items": {
             "$ref": "#/definitions/protobufAny"
           }
-        }
-      }
-    },
-    "tycMobileRes": {
-      "type": "object",
-      "properties": {
-        "CompanyId": {
-          "type": "string",
-          "format": "int64"
-        },
-        "Name": {
-          "type": "string"
-        },
-        "Phone": {
-          "type": "string"
-        },
-        "PhoneList": {
-          "type": "string"
-        },
-        "Telephone": {
-          "type": "string"
-        },
-        "Email": {
-          "type": "string"
-        },
-        "Emails": {
-          "type": "string"
         }
       }
     }

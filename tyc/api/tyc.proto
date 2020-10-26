@@ -1,30 +1,58 @@
 syntax = "proto3";
-package tyc;
+
+package api;
 
 option go_package = "github.com/realwrtoff/rest_grpc/tyc/api/tyc";
 
 import "google/api/annotations.proto";
+// import "google/protobuf/empty.proto";
+import "gogoproto/gogo.proto";
 
-message MobileReq {
-  int64 CompanyId = 1;
-  string Name = 2;
-  string Token = 3;
+message SignInReq {
+  string username = 1 [(gogoproto.moretags) = "rule:\"len(x) < 64 && len(x) >= 8\""];
+  string password = 2 [(gogoproto.moretags) = "rule:\"len(x) < 64 && len(x) >= 8\""];
 }
 
-message MobileRes {
-  int64 CompanyId = 1;
-  string Name = 2;
-  string Phone = 3;
-  string PhoneList = 4;
-  string Telephone = 5;
-  string Email = 6;
-  string Emails = 7;
+message SignInRes {
+  int32 status = 1;
+  string message = 2;
+  string token = 3;
 }
 
-service MobileService {
-  rpc Mobile(MobileReq) returns (MobileRes) {
+message SearchReq {
+  int64 companyId = 1;
+  string name = 2;
+  string token = 3;
+}
+
+message TycMobile {
+  int64 companyId = 1;
+  string name = 2;
+  string phone = 3;
+  string phoneList = 4;
+  string telephone = 5;
+  string email = 6;
+  string emails = 7;
+}
+
+message SearchRes {
+  int32 status = 1;
+  string message = 2;
+  TycMobile data = 3;
+}
+
+
+service TycService {
+  rpc SignIn(SignInReq) returns (SignInRes) {
     option (google.api.http) = {
-      get: "/mobile",
+      post: "/login",
+      body: "*"
+    };
+  }
+
+  rpc Search(SearchReq) returns (SearchRes) {
+    option (google.api.http) = {
+      get: "/search",
     };
   }
 }
