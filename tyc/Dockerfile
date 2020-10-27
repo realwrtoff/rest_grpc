@@ -1,7 +1,7 @@
 FROM centos:centos7 as builder
 
 RUN yum install -y make \
-    && yum install -y git gcc \
+    && yum install -y git gcc wget\
     && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo "Asia/Shanghai" >> /etc/timezone
 
@@ -11,7 +11,7 @@ RUN curl -OL https://dl.google.com/go/go1.15.3.linux-amd64.tar.gz
 RUN tar -xzvf go1.15.3.linux-amd64.tar.gz && mv go /usr/local
 ENV GOROOT=/usr/local/go
 ENV PATH=$PATH:$GOROOT/bin
-ENV GOPATH=$HOME/gopath
+ENV GOPATH=/gopath
 ENV GOBIN=$GOPATH/bin
 ENV PATH=$PATH:$GOBIN
 ENV GO111MODULE=on
@@ -28,7 +28,6 @@ RUN go get github.com/gogo/protobuf/protoc-gen-gofast
 # 添加代码和编译
 RUN git clone https://github.com/realwrtoff/rest_grpc.git
 RUN cd rest_grpc/tyc && make protoc
-ENV PATH=$PATH:/rest_grpc/tyc/third/protobuf/bin
 RUN make codegen && make output
 
 FROM centos:centos7
