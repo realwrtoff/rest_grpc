@@ -8,7 +8,7 @@ export PATH:=${PATH}:${GOPATH}/bin:$(shell pwd)/third/protobuf/bin
 export GOPOXY=https://goproxy.cn
 
 .PHONY: all
-all: vendor output
+all: codegen vendor output
 
 output: cmd/*.go internal/*/*.go api/gen/go/api/*.go scripts/version.sh Makefile vendor
 	@echo "compile"
