@@ -19,7 +19,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/keepalive"
 
-	api "github.com/realwrtoff/rest_grpc/tyc/api/gen/go/api"
+	tyc_api "github.com/realwrtoff/rest_grpc/tyc/api/gen/go/api"
 	"github.com/realwrtoff/rest_grpc/tyc/internal/service"
 )
 
@@ -60,7 +60,7 @@ func main() {
 	}
 
 	if options.ConfigPath == "" {
-		options.ConfigPath = "config/rest_grpc.json"
+		options.ConfigPath = "config/tyc_server.json"
 	}
 	cfg, err := config.NewSimpleFileConfig(options.ConfigPath)
 	Must(err)
@@ -97,7 +97,7 @@ func main() {
 			Timeout:               1 * time.Second,  // Wait 1 second for the ping ack before assuming the connection is dead
 		}),
 	)
-	api.RegisterTycServiceServer(rpcServer, svc)
+	tyc_api.RegisterTycServiceServer(rpcServer, svc)
 
 	go func() {
 		address, err := net.Listen("tcp", fmt.Sprintf("0.0.0.0:%v", options.Grpc.Port))
@@ -113,7 +113,7 @@ func main() {
 	)
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
-	Must(api.RegisterTycServiceHandlerFromEndpoint(
+	Must(tyc_api.RegisterTycServiceHandlerFromEndpoint(
 		ctx, muxServer, fmt.Sprintf("0.0.0.0:%v", options.Grpc.Port), []grpc.DialOption{grpc.WithInsecure()},
 	))
 	infoLog.Info(options)

@@ -2,10 +2,10 @@ package service
 
 import (
 	"context"
-	"encoding/json"
+	"github.com/golang/protobuf/proto"
 	"github.com/hatlonely/go-kit/rpcx"
 	"github.com/pkg/errors"
-	tyc "github.com/realwrtoff/rest_grpc/tyc/api/gen/go/api"
+	"github.com/realwrtoff/rest_grpc/tyc/api/gen/go/api"
 	"strconv"
 )
 
@@ -13,7 +13,7 @@ func (s *TycService) Search(ctx context.Context, req *tyc.SearchReq) (*tyc.Searc
 	requestID := rpcx.MetaDataGetRequestID(ctx)
 
 	searchRes := &tyc.SearchRes{
-		Status: 0,
+		Status: 200,
 		Message: "success",
 		Data: nil,
 	}
@@ -47,7 +47,7 @@ func (s *TycService) Search(ctx context.Context, req *tyc.SearchReq) (*tyc.Searc
 		return searchRes, err
 	}
 	tycMobile := &tyc.TycMobile{}
-	if err := json.Unmarshal(res, tycMobile); err != nil {
+	if err := proto.Unmarshal(res, tycMobile); err != nil {
 		searchRes.Message = err.Error()
 		return searchRes, err
 	}
