@@ -1,7 +1,7 @@
 FROM centos:centos7 as builder
 
 RUN yum install -y make \
-    && yum install -y git gcc wget\
+    && yum install -y git gcc wget glibc-headers gcc-c++ \
     && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo "Asia/Shanghai" >> /etc/timezone
 
