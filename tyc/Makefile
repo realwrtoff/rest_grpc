@@ -4,7 +4,7 @@ gituser=realwrtoff
 repository=rest_grpc
 version=$(shell git describe --tags)
 
-export PATH:=${PATH}:${GOPATH}/bin
+export PATH:=${PATH}:${GOPATH}/bin:$(shell pwd)/third/protobuf/bin
 export GOPOXY=https://goproxy.cn
 
 .PHONY: all
@@ -27,6 +27,21 @@ codegen: api/tyc.proto
 	protoc -I.. -I. --gofast_out=plugins=grpc,paths=source_relative:api/gen/go/ $<
 	protoc -I.. -I. --grpc-gateway_out=logtostderr=true,paths=source_relative:api/gen/go $<
 	protoc -I.. -I. --swagger_out=logtostderr=true:api/gen/swagger $<
+
+.PHONY: protoc
+protoc:
+	@hash protoc 2>/dev/null || { \
+		echo "install protobuf codegen tool protoc" && \
+		mkdir -p third && cd third && \
+		wget https://github.com/google/protobuf/releases/download/v3.2.0/protobuf-cpp-3.2.0.tar.gz && \
+		tar -xzvf protobuf-cpp-3.2.0.tar.gz && \
+		cd protobuf-3.2.0 && \
+		./configure --prefix=`pwd`/../protobuf && \
+		make -j8 && \
+		make install && \
+		cd ../.. && \
+		protoc --version; \
+	}
 
 .PHONY: clean
 clean:
