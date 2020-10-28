@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 source tmp/environment.sh
+Version=$(git describe --tags)
 
 function Trac() {
     echo "[TRAC] [$(date +"%Y-%m-%d %H:%M:%S")] $1"
@@ -31,6 +32,7 @@ function Help() {
 function main() {
     if [ -z "$1" ]; then
         Help
+        echo $Version
         return 0
     fi
 

@@ -3,7 +3,7 @@ dockeruser=realwrtoff
 gituser=realwrtoff
 repository=rest_grpc
 sub_path=tyc
-version=1.0.1
+version=$(shell git describe --tags)
 
 export PATH:=${PATH}:${GOPATH}/bin:
 export GOPOXY=https://goproxy.cn
