@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/hatlonely/go-kit/refx"
 	"net"
 	"net/http"
 	"os"
@@ -37,6 +38,7 @@ type Options struct {
 	Redis   cli.RedisOptions
 	Mysql   cli.MySQLOptions
 	Sycm 	service.SycmServiceOptions
+
 }
 
 func Must(err error) {
@@ -65,9 +67,9 @@ func main() {
 	Must(err)
 	Must(binding.Bind(&options, flag.Instance(), binding.NewEnvGetter(binding.WithEnvPrefix("SYCM")), cfg))
 
-	grpcLog, err := logger.NewLoggerWithConfig(cfg.Sub("logger.grpc"))
+	grpcLog, err := logger.NewLoggerWithConfig(cfg.Sub("logger.grpc"), refx.WithCamelName())
 	Must(err)
-	infoLog, err := logger.NewLoggerWithConfig(cfg.Sub("logger.info"))
+	infoLog, err := logger.NewLoggerWithConfig(cfg.Sub("logger.info"), refx.WithCamelName())
 	Must(err)
 
 	redisCli, err := cli.NewRedisWithOptions(&options.Redis)
@@ -79,11 +81,12 @@ func main() {
 		mysqlCli, redisCli, infoLog,
 		service.WithTokenExpiration(options.Sycm.TokenExpiration),
 		service.WithTokenMaxRequest(options.Sycm.TokenMaxRequest),
+		service.WithCookieHashKey(options.Sycm.CookieHashKey),
 	)
 	Must(err)
 
 	rpcServer := grpc.NewServer(
-		rpcx.WithGrpcDecorator(grpcLog),
+		rpcx.WithGRPCDecorator(grpcLog),
 		grpc.KeepaliveEnforcementPolicy(keepalive.EnforcementPolicy{
 			MinTime:             5 * time.Second, // If a client pings more than once every 5 seconds, terminate the connection
 			PermitWithoutStream: true,            // Allow pings even when there are no active streams

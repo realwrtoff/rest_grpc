@@ -1,0 +1,59 @@
+{
+  "http": {
+    "port": 21680
+  },
+  "grpc": {
+    "port": 21681
+  },
+  "sycm": {
+    "tokenExpiration": "30m",
+    "tokenMaxRequest": 300,
+    "cookieHashKey": "download_sycm_word_account_cookie"
+  },
+  "redis": {
+    "addr": "127.0.0.1:6379",
+    "dialTimeout": "200ms",
+    "readTimeout": "200ms",
+    "writeTimeout": "200ms",
+    "maxRetries": 3,
+    "poolSize": 20,
+    "db": 0,
+    "password": ""
+  },
+  "mysql": {
+    "username": "jim",
+    "password": "111111",
+    "database": "app",
+    "host": "127.0.0.1",
+    "port": 3306,
+    "connMaxLifeTime": "60s",
+    "maxIdleConns": 10,
+    "maxOpenConns": 20
+  },
+  "logger": {
+    "grpc": {
+      "level": "Info",
+      "writers": [{
+        "type": "RotateFile",
+        "filename": "log/sycm.grpc",
+        "maxAge": "24h"
+      }]
+    },
+    "warn": {
+      "level": "Warn",
+      "writers": [{
+        "type": "RotateFile",
+        "filename": "log/sycm.err",
+        "maxAge": "24h"
+      }]
+    },
+    "info": {
+      "level": "Info",
+      "writers": [{
+        "type": "RotateFile",
+        "filename": "log/sycm.log",
+        "maxAge": "24h"
+      }]
+    }
+  }
+}

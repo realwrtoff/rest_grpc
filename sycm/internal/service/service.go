@@ -13,6 +13,7 @@ type SycmService struct {
 	logger 		*logger.Logger
 	tokenExpiration time.Duration
 	tokenMaxRequest int64
+	cookieHashKey string
 }
 
 func NewSycmService(mysqlCli *gorm.DB, redisCli *redis.Client, logger *logger.Logger, opts ...SycmServiceOption) (*SycmService, error) {
@@ -27,17 +28,20 @@ func NewSycmService(mysqlCli *gorm.DB, redisCli *redis.Client, logger *logger.Lo
 		logger: 	logger,
 		tokenExpiration: options.TokenExpiration,
 		tokenMaxRequest: options.TokenMaxRequest,
+		cookieHashKey: options.CookieHashKey,
 	}, nil
 }
 
 type SycmServiceOptions struct {
 	TokenExpiration time.Duration
 	TokenMaxRequest int64
+	CookieHashKey string
 }
 
 var defaultAccountServiceOptions = SycmServiceOptions{
 	TokenExpiration: 24 * time.Hour,
 	TokenMaxRequest: 300,
+	CookieHashKey: "download_sycm_word_account_cookie",
 }
 
 type SycmServiceOption func(options *SycmServiceOptions)
@@ -51,5 +55,11 @@ func WithTokenExpiration(tokenExpiration time.Duration) SycmServiceOption {
 func WithTokenMaxRequest(tokenMaxRequest int64) SycmServiceOption {
 	return func(options *SycmServiceOptions) {
 		options.TokenMaxRequest = tokenMaxRequest
+	}
+}
+
+func WithCookieHashKey(cookieHashKey string) SycmServiceOption {
+	return func(options *SycmServiceOptions) {
+		options.CookieHashKey = cookieHashKey
 	}
 }
