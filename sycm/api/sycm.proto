@@ -14,7 +14,7 @@ message CookieReq {
 }
 
 message CookieRes {
-  string code = 1;
+  int32 code = 1;
   string message = 2;
   string data = 3;
 }

@@ -16,11 +16,10 @@ import (
 	"github.com/hatlonely/go-kit/flag"
 	"github.com/hatlonely/go-kit/logger"
 	"github.com/hatlonely/go-kit/rpcx"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/keepalive"
-
 	sycmApi "github.com/realwrtoff/rest_grpc/sycm/api/gen/go/api"
 	"github.com/realwrtoff/rest_grpc/sycm/internal/service"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/keepalive"
 )
 
 var Version string
