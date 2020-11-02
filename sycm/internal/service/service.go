@@ -15,7 +15,7 @@ type SycmService struct {
 	tokenMaxRequest int64
 }
 
-func NewTycService(mysqlCli *gorm.DB, redisCli *redis.Client, logger *logger.Logger, opts ...SycmServiceOption) (*SycmService, error) {
+func NewSycmService(mysqlCli *gorm.DB, redisCli *redis.Client, logger *logger.Logger, opts ...SycmServiceOption) (*SycmService, error) {
 	options := defaultAccountServiceOptions
 	for _, opt := range opts {
 		opt(&options)
@@ -30,26 +30,26 @@ func NewTycService(mysqlCli *gorm.DB, redisCli *redis.Client, logger *logger.Log
 	}, nil
 }
 
-type TycServiceOptions struct {
+type SycmServiceOptions struct {
 	TokenExpiration time.Duration
 	TokenMaxRequest int64
 }
 
-var defaultAccountServiceOptions = TycServiceOptions{
+var defaultAccountServiceOptions = SycmServiceOptions{
 	TokenExpiration: 24 * time.Hour,
 	TokenMaxRequest: 300,
 }
 
-type SycmServiceOption func(options *TycServiceOptions)
+type SycmServiceOption func(options *SycmServiceOptions)
 
 func WithTokenExpiration(tokenExpiration time.Duration) SycmServiceOption {
-	return func(options *TycServiceOptions) {
+	return func(options *SycmServiceOptions) {
 		options.TokenExpiration = tokenExpiration
 	}
 }
 
 func WithTokenMaxRequest(tokenMaxRequest int64) SycmServiceOption {
-	return func(options *TycServiceOptions) {
+	return func(options *SycmServiceOptions) {
 		options.TokenMaxRequest = tokenMaxRequest
 	}
 }
