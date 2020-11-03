@@ -55,7 +55,7 @@ image: dockerenv
 	docker cp ../ go-build-env:/data/src/${gituser}/
 	docker exec go-build-env bash -c "cd /data/src/${gituser}/${repository}/${sub_path} && make codegen && make build"
 	docker cp go-build-env:/data/src/${gituser}/${repository}/${sub_path}/build/ docker/
-	docker build --tag=realwrtoff/${repository}/${version} .
+	docker build --tag=realwrtoff/${repository}:${version} .
 
 .PHONY: clean
 clean:
