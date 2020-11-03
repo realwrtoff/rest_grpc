@@ -70,6 +70,16 @@
             }
           }
         },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/apiCookieReq"
+            }
+          }
+        ],
         "tags": [
           "sycmService"
         ]
@@ -77,6 +87,20 @@
     }
   },
   "definitions": {
+    "apiCookieReq": {
+      "type": "object",
+      "properties": {
+        "cookie": {
+          "type": "string"
+        },
+        "token": {
+          "type": "string"
+        },
+        "account": {
+          "type": "string"
+        }
+      }
+    },
     "apiCookieRes": {
       "type": "object",
       "properties": {

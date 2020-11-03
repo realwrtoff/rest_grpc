@@ -24,6 +24,7 @@ service sycmService {
   rpc SetCookie(CookieReq) returns (CookieRes) {
     option (google.api.http) = {
       post: "/cookie/set",
+      body: "*"
     };
   }
 
