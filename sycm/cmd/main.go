@@ -37,7 +37,7 @@ type Options struct {
 
 	Redis   cli.RedisOptions
 	Mysql   cli.MySQLOptions
-	Sycm 	service.SycmServiceOptions
+	Service service.Options
 
 }
 
@@ -65,7 +65,7 @@ func main() {
 	}
 	cfg, err := config.NewSimpleFileConfig(options.ConfigPath)
 	Must(err)
-	Must(binding.Bind(&options, flag.Instance(), binding.NewEnvGetter(binding.WithEnvPrefix("SYCM")), cfg))
+	Must(binding.Bind(&options, flag.Instance(), binding.NewEnvGetter(binding.WithEnvPrefix("SERV")), cfg))
 
 	grpcLog, err := logger.NewLoggerWithConfig(cfg.Sub("logger.grpc"), refx.WithCamelName())
 	Must(err)
@@ -77,12 +77,7 @@ func main() {
 	mysqlCli, err := cli.NewMysqlWithOptions(&options.Mysql)
 	Must(err)
 
-	svc, err := service.NewSycmService(
-		mysqlCli, redisCli, infoLog,
-		service.WithTokenExpiration(options.Sycm.TokenExpiration),
-		service.WithTokenMaxRequest(options.Sycm.TokenMaxRequest),
-		service.WithCookieHashKey(options.Sycm.CookieHashKey),
-	)
+	svc, err := service.NewSycmService(mysqlCli, redisCli, infoLog,&options.Service)
 	Must(err)
 
 	rpcServer := grpc.NewServer(

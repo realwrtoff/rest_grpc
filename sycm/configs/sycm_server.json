@@ -5,10 +5,11 @@
   "grpc": {
     "port": 21681
   },
-  "sycm": {
+  "service": {
     "tokenExpiration": "30m",
     "tokenMaxRequest": 300,
-    "cookieHashKey": "download_sycm_word_account_cookie"
+    "cookieHashKey": "download_sycm_word_cookie_hash",
+    "cookieHashField": "cookie"
   },
   "redis": {
     "addr": "127.0.0.1:6379",
