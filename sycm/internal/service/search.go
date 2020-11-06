@@ -2,19 +2,20 @@ package service
 
 import (
 	"context"
+	"fmt"
 	"github.com/go-redis/redis"
 	"github.com/hatlonely/go-kit/rpcx"
+	"github.com/pkg/errors"
 	sycm "github.com/realwrtoff/rest_grpc/sycm/api/gen/go/api"
 	"github.com/realwrtoff/rest_grpc/sycm/internal/public"
 	"google.golang.org/grpc/codes"
 	"net/url"
 )
 
-
-func (s *SycmService) SetCookie(ctx context.Context, req *sycm.CookieReq) (*sycm.CookieRes, error){
+func (s *SycmService) SetCookie(ctx context.Context, req *sycm.CookieReq) (*sycm.CookieRes, error) {
 	requestID := rpcx.MetaDataGetRequestID(ctx)
 	searchRes := &sycm.CookieRes{
-		Code: 200,
+		Code:    200,
 		Message: "success",
 	}
 	// token 校验
@@ -40,14 +41,22 @@ func (s *SycmService) SetCookie(ctx context.Context, req *sycm.CookieReq) (*sycm
 		searchRes.Data = err.Error()
 		return searchRes, rpcx.NewErrorWithoutReferf(codes.Internal, requestID, "Internal Error", "account[%v] set cookie failed", account)
 	}
-	searchRes.Data = account
+	// 写入队列，因为发现cookie要过一段时间才能生效
+	length, err := s.redisCli.RPush(s.options.CookieQueue, req.Cookie).Result()
+	if err != nil {
+		searchRes.Code = 500
+		searchRes.Message = "rpush account cookie failed"
+		searchRes.Data = err.Error()
+		return searchRes, errors.Wrapf(err, "rpush cookie %s failed", req.Cookie)
+	}
+	searchRes.Data = fmt.Sprintf("set %v cookie ok, total %v cookie in queue", account, length)
 	return searchRes, nil
 }
 
-func (s *SycmService) GetCookie(ctx context.Context, req *sycm.CookieReq) (*sycm.CookieRes, error){
+func (s *SycmService) GetCookie(ctx context.Context, req *sycm.CookieReq) (*sycm.CookieRes, error) {
 	requestID := rpcx.MetaDataGetRequestID(ctx)
-	searchRes := &sycm.CookieRes {
-		Code: 200,
+	searchRes := &sycm.CookieRes{
+		Code:    200,
 		Message: "success",
 	}
 	// token 校验

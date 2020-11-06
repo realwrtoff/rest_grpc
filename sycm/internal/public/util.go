@@ -15,8 +15,7 @@ func IsHan(s string) bool {
 	return false
 }
 
-
-func CookieToMap(cookieStr string) map[string]string  {
+func CookieToMap(cookieStr string) map[string]string {
 	mp := map[string]string{}
 	for _, cookie := range strings.Split(cookieStr, "; ") {
 		idx := strings.Index(cookie, "=")

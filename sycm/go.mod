@@ -9,6 +9,7 @@ require (
 	github.com/grpc-ecosystem/grpc-gateway v1.16.0
 	github.com/hatlonely/go-kit v1.0.6
 	github.com/jinzhu/gorm v1.9.16
+	github.com/pkg/errors v0.9.1
 	google.golang.org/genproto v0.0.0-20201030142918-24207fddd1c3
 	google.golang.org/grpc v1.33.1
 )

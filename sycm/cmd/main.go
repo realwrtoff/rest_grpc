@@ -38,7 +38,6 @@ type Options struct {
 	Redis   cli.RedisOptions
 	Mysql   cli.MySQLOptions
 	Service service.Options
-
 }
 
 func Must(err error) {
@@ -77,7 +76,7 @@ func main() {
 	mysqlCli, err := cli.NewMysqlWithOptions(&options.Mysql)
 	Must(err)
 
-	svc, err := service.NewSycmService(mysqlCli, redisCli, infoLog,&options.Service)
+	svc, err := service.NewSycmService(mysqlCli, redisCli, infoLog, &options.Service)
 	Must(err)
 
 	rpcServer := grpc.NewServer(

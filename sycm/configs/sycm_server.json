@@ -9,7 +9,8 @@
     "tokenExpiration": "30m",
     "tokenMaxRequest": 300,
     "cookieHashKey": "download_sycm_word_cookie_hash",
-    "cookieHashField": "cookie"
+    "cookieHashField": "cookie",
+    "cookieQueue": "download_sycm_word_cookie_list"
   },
   "redis": {
     "addr": "127.0.0.1:6379",

@@ -10,22 +10,23 @@ import (
 type Options struct {
 	TokenExpiration time.Duration
 	TokenMaxRequest int64
-	CookieHashKey string
+	CookieHashKey   string
 	CookieHashField string
+	CookieQueue     string
 }
 
 type SycmService struct {
-	mysqlCli    *gorm.DB
-	redisCli    *redis.Client
-	logger 		*logger.Logger
-	options 	*Options
+	mysqlCli *gorm.DB
+	redisCli *redis.Client
+	logger   *logger.Logger
+	options  *Options
 }
 
 func NewSycmService(mysqlCli *gorm.DB, redisCli *redis.Client, logger *logger.Logger, options *Options) (*SycmService, error) {
 	return &SycmService{
-		mysqlCli: 	mysqlCli,
-		redisCli: 	redisCli,
-		logger: 	logger,
-		options:	options,
+		mysqlCli: mysqlCli,
+		redisCli: redisCli,
+		logger:   logger,
+		options:  options,
 	}, nil
 }
